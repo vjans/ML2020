@@ -10,26 +10,31 @@ class Arff:
 	attribute = {}
 	
 	def __init__(self, relation, attribute, data):
-		self.relation = relation
-		self.attribute = attribute
-		self.data = data
+		self.relation = if (relation == none): [] else: relation
+		self.attribute = if (attribute == none): [] else: attribute
+		self.data = if (data == none): [] else: data
 	
 	def read_arff(path):
 		start = 0
-		relation = ""
 		in1 = open(path, "r")
-		data = []
-		attribute = {}
+	
+
 		
 		for x in in1:
 			if x.startswith('@relation'):
-				relation = x.split(" ")[1].replace("\n","")
+				self.relation = x.split(" ")[1].replace("\n","")
 			if x.startswith('@attribute'):
-				tmp = x.replace("{","").replace("}","").replace("\n","").replace(",","").split(" ")
-				values = tmp[2:]
-				attribute.update({tmp[1]:values})
+				tmp = x.replace("{","").replace("}","").replace("\n","")
+				
+				#checks if whitespaces between commas in attributes occur
+				if ( len(tmp.split(" ")) > 3):
+					values = tmp.replace(",","").split(" ")[2:]
+				else:
+					values = tmp[2].split(",")
+					
+				self.attribute.update({tmp[1]:values})
 			if start:
-				data.append(x.replace("\n","").split(","))
+				self.data.append(x.replace("\n","").split(","))
 			if x.startswith('@data'):
 				start=1
 			
